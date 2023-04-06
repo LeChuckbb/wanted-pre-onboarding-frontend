@@ -17,7 +17,7 @@ function useTodo() {
     fetchTodo();
   }, []);
 
-  const handleSubmit = async (event) => {
+  const handleCreateTodoSubmit = async (event) => {
     try {
       event.preventDefault();
       const body = {
@@ -30,7 +30,40 @@ function useTodo() {
     }
   };
 
-  return { todos, handleSubmit, todoRef };
+  const handleOnClick = async (event) => {
+    try {
+      const key = event?.target?.dataset?.testid;
+      switch (key) {
+        case "modify-button":
+          console.log("수정 버튼 클릭");
+          break;
+        case "delete-button":
+          console.log("삭제 버튼 클릭");
+          break;
+        case "cancel-button":
+          console.log("취소 버튼 클릭");
+          break;
+        default:
+          break;
+      }
+    } catch (error) {}
+  };
+
+  const handleOnChangeCheckbox = async (event) => {
+    try {
+      console.log("ON CHANGE");
+      console.log(event);
+      console.log(event.target);
+    } catch (error) {}
+  };
+
+  return {
+    todos,
+    handleCreateTodoSubmit,
+    todoRef,
+    handleOnChangeCheckbox,
+    handleOnClick,
+  };
 }
 
 export default useTodo;

@@ -15,8 +15,8 @@ export const getTodoAPI = () =>
     },
   });
 
-export const updateTodoAPI = (body) =>
-  axiosInstance.put("/todos", body, {
+export const updateTodoAPI = (id, body) =>
+  axiosInstance.put(`/todos/${id}`, body, {
     headers: {
       Authorization: "Bearer " + localStorage.getItem("accessToken"),
       "Content-Type": "application/json",
