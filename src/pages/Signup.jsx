@@ -6,12 +6,12 @@ function Signup() {
     password,
     handleEmailChange,
     handlePasswordChange,
-    handleSubmit,
+    handleSubmitSignup,
     isDisabled,
   } = useInputValidation();
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmitSignup}>
       <label>
         이메일
         <input

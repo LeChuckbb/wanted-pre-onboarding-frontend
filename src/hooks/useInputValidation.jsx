@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { signupAPI } from "../apis/auth";
 
 function useInputValidation() {
   const [email, setEmail] = useState("");
@@ -14,8 +15,14 @@ function useInputValidation() {
     setPassword(event.target.value);
   };
 
-  const handleSubmit = (event) => {
-    event.prevnetDefault();
+  const handleSubmitSignup = async (event) => {
+    event.preventDefault();
+    const res = await signupAPI({ email, password });
+    console.log(res);
+  };
+
+  const handleSubmitSignin = (event) => {
+    event.preventDefault();
   };
 
   return {
@@ -23,7 +30,8 @@ function useInputValidation() {
     password,
     handleEmailChange,
     handlePasswordChange,
-    handleSubmit,
+    handleSubmitSignup,
+    handleSubmitSignin,
     isDisabled,
   };
 }

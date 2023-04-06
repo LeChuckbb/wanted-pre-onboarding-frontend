@@ -6,12 +6,12 @@ function Signin() {
     password,
     handleEmailChange,
     handlePasswordChange,
-    handleSubmit,
+    handleSubmitSignin,
     isDisabled,
   } = useInputValidation();
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmitSignin}>
       <label>
         이메일
         <input
