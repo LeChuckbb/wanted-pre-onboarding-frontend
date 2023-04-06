@@ -30,7 +30,7 @@ function Signup() {
         ></input>
       </label>
 
-      <button data-testid="signup-button" type="submit" disabled={isDisabled}>
+      <button data-testid="signup-button" disabled={isDisabled}>
         회원가입
       </button>
     </form>

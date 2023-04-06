@@ -30,35 +30,26 @@ const Todo = () => {
   );
 };
 
-// 1. TodoList 에서 여러개의 상태들을 만들어야 한다.
-// 2. TodoList 상위 컴포넌트에 TodoList 상태를 이용한 이벤트 핸들러를 부착하고 싶다.
-
 const TodoList = ({ todo, onDelete }) => {
-  const {
-    isChecked,
-    handleCheckChange,
-    MutateButtons,
-    isEditMode,
-    todoString,
-    inputRef,
-  } = useTodoList(onDelete, todo);
+  const { handleCheckChange, MutateButtons, todoStatus, inputRef } =
+    useTodoList(onDelete, todo);
 
   return (
     <li>
       <label>
         <input
           type="checkbox"
-          checked={isChecked}
+          checked={todoStatus.isChecked}
           onChange={handleCheckChange}
         />
-        {isEditMode ? (
+        {todoStatus.isEditMode ? (
           <input
-            defaultValue={todoString}
+            defaultValue={todoStatus.value}
             data-testid="modify-input"
             ref={inputRef}
           />
         ) : (
-          <span>{todoString}</span>
+          <span>{todoStatus.value}</span>
         )}
       </label>
       <MutateButtons />

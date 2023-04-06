@@ -2,27 +2,38 @@ import { useState, useRef } from "react";
 import { updateTodoAPI, deleteTodoAPI } from "../apis/todo";
 
 const useTodoList = (onDelete, todo) => {
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [todoString, setTodoString] = useState(todo.todo);
-  const [isChecked, setIsChecked] = useState(todo.isCompleted);
+  const [todoStatus, setTodoStatus] = useState({
+    isEditMode: false,
+    isChecked: todo.isCompleted,
+    value: todo.todo,
+  });
   const inputRef = useRef(null);
 
   const handleSubmitUpdate = async () => {
     const body = {
       todo: inputRef.current.value,
-      isCompleted: isChecked,
+      isCompleted: todoStatus.isChecked,
     };
     await updateTodoAPI(todo.id, body);
-    setIsEditMode(false);
-    setTodoString(inputRef.current.value);
+    setTodoStatus({
+      ...todoStatus,
+      isEditMode: false,
+      value: inputRef.current.value,
+    });
   };
 
   const handleCancel = () => {
-    setIsEditMode(false);
+    setTodoStatus({
+      ...todoStatus,
+      isEditMode: false,
+    });
   };
 
   const handleModify = () => {
-    setIsEditMode(true);
+    setTodoStatus({
+      ...todoStatus,
+      isEditMode: true,
+    });
   };
 
   const handleDelete = async () => {
@@ -31,18 +42,22 @@ const useTodoList = (onDelete, todo) => {
   };
 
   const handleCheckChange = async () => {
+    // isEditMode가 아닐 땐 ref가 없으므로, value 사용
     const body = {
-      todo: todoString,
-      isCompleted: !isChecked,
+      todo: todoStatus.value,
+      isCompleted: !todoStatus.isChecked,
     };
     await updateTodoAPI(todo.id, body);
-    setIsChecked(!isChecked);
+    setTodoStatus({
+      ...todoStatus,
+      isChecked: !todoStatus.isChecked,
+    });
   };
 
   const MutateButtons = () => {
     return (
       <>
-        {isEditMode ? (
+        {todoStatus.isEditMode ? (
           <>
             <button data-testid="submit-button" onClick={handleSubmitUpdate}>
               제출
@@ -66,11 +81,9 @@ const useTodoList = (onDelete, todo) => {
   };
 
   return {
-    isChecked,
     MutateButtons,
-    isEditMode,
-    todoString,
     handleCheckChange,
+    todoStatus,
     inputRef,
   };
 };

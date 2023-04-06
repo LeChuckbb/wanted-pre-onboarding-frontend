@@ -5,11 +5,7 @@ const SIGNIN_URL = "/auth/signin";
 
 export const signupAPI = async (body) => {
   try {
-    await axiosInstance.post(SIGNUP_URL, body, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    await axiosInstance.post(SIGNUP_URL, body);
     window.location.href = "/signin";
   } catch (error) {
     console.error(error);
@@ -18,11 +14,7 @@ export const signupAPI = async (body) => {
 
 export const signinAPI = async (body) => {
   try {
-    const res = await axiosInstance.post(SIGNIN_URL, body, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    const res = await axiosInstance.post(SIGNIN_URL, body);
     localStorage.setItem("accessToken", res.data.access_token);
     window.location.href = "/todo";
     return res;
