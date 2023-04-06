@@ -16,9 +16,17 @@ export const signupAPI = async (body) => {
   }
 };
 
-export const signinAPI = (body) =>
-  axiosInstance.post(SIGNIN_URL, body, {
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+export const signinAPI = async (body) => {
+  try {
+    const res = await axiosInstance.post(SIGNIN_URL, body, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+    localStorage.setItem("accessToken", res.data.access_token);
+    window.location.href = "/todo";
+    return res;
+  } catch (error) {
+    console.error(error);
+  }
+};

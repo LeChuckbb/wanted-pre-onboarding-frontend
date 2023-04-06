@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { signupAPI } from "../apis/auth";
+import { signinAPI, signupAPI } from "../apis/auth";
 
 function useInputValidation() {
   const [email, setEmail] = useState("");
@@ -20,8 +20,9 @@ function useInputValidation() {
     await signupAPI({ email, password });
   };
 
-  const handleSubmitSignin = (event) => {
+  const handleSubmitSignin = async (event) => {
     event.preventDefault();
+    await signinAPI({ email, password });
   };
 
   return {
