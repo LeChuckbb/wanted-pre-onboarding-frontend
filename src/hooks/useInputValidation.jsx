@@ -17,8 +17,7 @@ function useInputValidation() {
 
   const handleSubmitSignup = async (event) => {
     event.preventDefault();
-    const res = await signupAPI({ email, password });
-    console.log(res);
+    await signupAPI({ email, password });
   };
 
   const handleSubmitSignin = (event) => {
