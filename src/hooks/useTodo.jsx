@@ -25,6 +25,7 @@ function useTodo() {
       };
       const res = await createTodoAPI(body);
       setTodos([...todos, res.data]);
+      todoRef.current.value = "";
     } catch (error) {
       console.error(error);
     }
@@ -59,6 +60,7 @@ function useTodo() {
 
   return {
     todos,
+    setTodos,
     handleCreateTodoSubmit,
     todoRef,
     handleOnChangeCheckbox,

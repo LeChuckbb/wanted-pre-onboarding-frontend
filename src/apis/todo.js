@@ -23,8 +23,8 @@ export const updateTodoAPI = (id, body) =>
     },
   });
 
-export const deleteTodoAPI = () =>
-  axiosInstance.delete("/todos", {
+export const deleteTodoAPI = (id) =>
+  axiosInstance.delete(`/todos/${id}`, {
     headers: {
       Authorization: "Bearer " + localStorage.getItem("accessToken"),
     },

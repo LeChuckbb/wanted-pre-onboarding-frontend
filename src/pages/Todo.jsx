@@ -1,10 +1,11 @@
 import useTodo from "../hooks/useTodo";
 import { useState, useRef } from "react";
-import { updateTodoAPI } from "../apis/todo";
+import { updateTodoAPI, deleteTodoAPI } from "../apis/todo";
 
 function Todo() {
   const {
     todos,
+    setTodos,
     handleCreateTodoSubmit,
     todoRef,
     handleOnChangeCheckbox,
@@ -22,20 +23,27 @@ function Todo() {
 
       <div onChange={handleOnChangeCheckbox} onClick={handleOnClick}>
         {todos.map((todo) => (
-          <TodoList todo={todo} key={todo.id} />
+          <TodoList
+            todo={todo}
+            key={todo.id}
+            setTodos={setTodos}
+            onDelete={() => {
+              setTodos(todos.filter((t) => t.id !== todo.id));
+            }}
+          />
         ))}
       </div>
     </>
   );
 }
 
-const TodoList = ({ todo }) => {
+const TodoList = ({ todo, onDelete }) => {
   const [isEditMode, setIsEditMode] = useState(false);
   const [todoString, setTodoString] = useState(todo.todo);
   const [isChecked, setIsChecked] = useState(todo.isCompleted);
   const inputRef = useRef(null);
 
-  const handleSubmitUpdate = async (event) => {
+  const handleSubmitUpdate = async () => {
     const body = {
       todo: todoString,
       isCompleted: isChecked,
@@ -48,6 +56,11 @@ const TodoList = ({ todo }) => {
   const handleCancel = () => {
     setIsEditMode(false);
     setTodoString(todo.todo);
+  };
+
+  const handleDelete = async () => {
+    await deleteTodoAPI(todo.id);
+    onDelete();
   };
 
   return (
@@ -86,7 +99,9 @@ const TodoList = ({ todo }) => {
           >
             수정
           </button>
-          <button data-testid="delete-button">삭제</button>
+          <button data-testid="delete-button" onClick={handleDelete}>
+            삭제
+          </button>
         </>
       )}
     </li>
