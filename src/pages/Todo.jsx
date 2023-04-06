@@ -53,6 +53,15 @@ const TodoList = ({ todo, onDelete }) => {
     setTodoString(inputRef.current.value);
   };
 
+  const handleCheckUpdate = async () => {
+    const body = {
+      todo: todoString,
+      isCompleted: !isChecked,
+    };
+    await updateTodoAPI(todo.id, body);
+    setIsChecked(!isChecked);
+  };
+
   const handleCancel = () => {
     setIsEditMode(false);
     setTodoString(todo.todo);
@@ -69,7 +78,7 @@ const TodoList = ({ todo, onDelete }) => {
         <input
           type="checkbox"
           checked={isChecked}
-          onChange={() => setIsChecked(!isChecked)}
+          onChange={handleCheckUpdate}
         />
         {isEditMode ? (
           <input
