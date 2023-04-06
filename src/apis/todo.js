@@ -1,31 +1,31 @@
 import axiosInstance from ".";
 
-export const createTodo = (body) =>
+export const createTodoAPI = (body) =>
   axiosInstance.post("/todos", body, {
     headers: {
-      Authorization: "Bearer " + localStorage.getItem("token"),
+      Authorization: "Bearer " + localStorage.getItem("accessToken"),
       "Content-Type": "application/json",
     },
   });
 
-export const getTodo = () =>
+export const getTodoAPI = () =>
   axiosInstance.get("/todos", {
     headers: {
-      Authorization: "Bearer " + localStorage.getItem("token"),
+      Authorization: "Bearer " + localStorage.getItem("accessToken"),
     },
   });
 
-export const updateTodo = (body) =>
+export const updateTodoAPI = (body) =>
   axiosInstance.put("/todos", body, {
     headers: {
-      Authorization: "Bearer " + localStorage.getItem("token"),
+      Authorization: "Bearer " + localStorage.getItem("accessToken"),
       "Content-Type": "application/json",
     },
   });
 
-export const deleteTodo = () =>
+export const deleteTodoAPI = () =>
   axiosInstance.delete("/todos", {
     headers: {
-      Authorization: "Bearer " + localStorage.getItem("token"),
+      Authorization: "Bearer " + localStorage.getItem("accessToken"),
     },
   });
