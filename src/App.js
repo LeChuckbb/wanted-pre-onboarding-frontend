@@ -3,16 +3,34 @@ import { Routes, Route, Link } from "react-router-dom";
 import Signup from "./pages/Signup";
 import Signin from "./pages/Signin";
 import Todo from "./pages/Todo";
-
-const Main = () => {
-  return <div>Main</div>;
-};
+import ProtectedRoute from "./auth/ProtectedRoute";
 
 const routes = [
-  { path: "/", element: <Main /> },
-  { path: "/signup", element: <Signup /> },
-  { path: "/signin", element: <Signin /> },
-  { path: "/todo", element: <Todo /> },
+  { path: "/", element: <div>Main</div> },
+  {
+    path: "/signup",
+    element: (
+      <ProtectedRoute to="/todo">
+        <Signup />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/signin",
+    element: (
+      <ProtectedRoute to="/todo">
+        <Signin />
+      </ProtectedRoute>
+    ),
+  },
+  {
+    path: "/todo",
+    element: (
+      <ProtectedRoute to="/signin">
+        <Todo />
+      </ProtectedRoute>
+    ),
+  },
 ];
 
 function App() {
