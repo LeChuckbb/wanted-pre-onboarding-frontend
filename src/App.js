@@ -36,7 +36,7 @@ const routes = [
 function App() {
   return (
     <div className="App">
-      <ul>
+      <ul className="App__header">
         {routes.map((route) => (
           <li key={route.path}>
             <Link to={route.path}>{route.path}</Link>

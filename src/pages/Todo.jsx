@@ -1,19 +1,11 @@
 import useTodo from "../hooks/useTodo";
-import { useState, useRef } from "react";
-import { updateTodoAPI, deleteTodoAPI } from "../apis/todo";
+import useTodoList from "../hooks/useTodoList";
 
-function Todo() {
-  const {
-    todos,
-    setTodos,
-    handleCreateTodoSubmit,
-    todoRef,
-    handleOnChangeCheckbox,
-    handleOnClick,
-  } = useTodo();
+const Todo = () => {
+  const { todos, setTodos, handleCreateTodoSubmit, todoRef } = useTodo();
 
   return (
-    <>
+    <div className="Todo__container">
       <div>
         <form onSubmit={handleCreateTodoSubmit}>
           <input data-testid="new-todo-input" ref={todoRef} />
@@ -21,56 +13,35 @@ function Todo() {
         </form>
       </div>
 
-      <div onChange={handleOnChangeCheckbox} onClick={handleOnClick}>
-        {todos.map((todo) => (
-          <TodoList
-            todo={todo}
-            key={todo.id}
-            setTodos={setTodos}
-            onDelete={() => {
-              setTodos(todos.filter((t) => t.id !== todo.id));
-            }}
-          />
-        ))}
+      <div>
+        <ul>
+          {todos.map((todo) => (
+            <TodoList
+              todo={todo}
+              key={todo.id}
+              onDelete={() => {
+                setTodos(todos.filter((t) => t.id !== todo.id));
+              }}
+            />
+          ))}
+        </ul>
       </div>
-    </>
+    </div>
   );
-}
+};
+
+// 1. TodoList 에서 여러개의 상태들을 만들어야 한다.
+// 2. TodoList 상위 컴포넌트에 TodoList 상태를 이용한 이벤트 핸들러를 부착하고 싶다.
 
 const TodoList = ({ todo, onDelete }) => {
-  const [isEditMode, setIsEditMode] = useState(false);
-  const [todoString, setTodoString] = useState(todo.todo);
-  const [isChecked, setIsChecked] = useState(todo.isCompleted);
-  const inputRef = useRef(null);
-
-  const handleSubmitUpdate = async () => {
-    const body = {
-      todo: todoString,
-      isCompleted: isChecked,
-    };
-    await updateTodoAPI(todo.id, body);
-    setIsEditMode(false);
-    setTodoString(inputRef.current.value);
-  };
-
-  const handleCheckUpdate = async () => {
-    const body = {
-      todo: todoString,
-      isCompleted: !isChecked,
-    };
-    await updateTodoAPI(todo.id, body);
-    setIsChecked(!isChecked);
-  };
-
-  const handleCancel = () => {
-    setIsEditMode(false);
-    setTodoString(todo.todo);
-  };
-
-  const handleDelete = async () => {
-    await deleteTodoAPI(todo.id);
-    onDelete();
-  };
+  const {
+    isChecked,
+    handleCheckChange,
+    MutateButtons,
+    isEditMode,
+    todoString,
+    inputRef,
+  } = useTodoList(onDelete, todo);
 
   return (
     <li>
@@ -78,41 +49,19 @@ const TodoList = ({ todo, onDelete }) => {
         <input
           type="checkbox"
           checked={isChecked}
-          onChange={handleCheckUpdate}
+          onChange={handleCheckChange}
         />
         {isEditMode ? (
           <input
+            defaultValue={todoString}
             data-testid="modify-input"
             ref={inputRef}
-            value={todoString}
-            onChange={(e) => setTodoString(e.target.value)}
           />
         ) : (
           <span>{todoString}</span>
         )}
       </label>
-      {isEditMode ? (
-        <>
-          <button data-testid="submit-button" onClick={handleSubmitUpdate}>
-            제출
-          </button>
-          <button data-testid="cancel-button" onClick={handleCancel}>
-            취소
-          </button>
-        </>
-      ) : (
-        <>
-          <button
-            data-testid="modify-button"
-            onClick={() => setIsEditMode(true)}
-          >
-            수정
-          </button>
-          <button data-testid="delete-button" onClick={handleDelete}>
-            삭제
-          </button>
-        </>
-      )}
+      <MutateButtons />
     </li>
   );
 };
