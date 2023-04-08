@@ -6,7 +6,7 @@ https://github.com/walking-sunset/selection-task#readme
 
 # 실행 방법
 
-1. git clone
+1. git clone https://github.com/LeChuckbb/wanted-pre-onboarding-frontend.git
 
 2. npm install
 
