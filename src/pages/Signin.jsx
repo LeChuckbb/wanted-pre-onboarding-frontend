@@ -27,6 +27,7 @@ function Signin() {
           data-testid="password-input"
           value={password}
           onChange={handlePasswordChange}
+          type="password"
         ></input>
       </label>
 
